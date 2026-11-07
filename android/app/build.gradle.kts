@@ -19,6 +19,10 @@ android {
         versionName = "0.1.0"
         buildConfigField("String", "API_BASE_URL", "\"$grantBridgeApiBaseUrl\"")
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
     buildFeatures { compose = true; buildConfig = true }
 }
 
