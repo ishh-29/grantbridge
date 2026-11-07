@@ -1,0 +1,60 @@
+name: Build and publish Android APK
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-apk:
+    name: Build debug APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: android/cosmic-orb/package-lock.json
+
+      - name: Build local avatar assets
+        working-directory: android/cosmic-orb
+        run: |
+          npm ci
+          npm run build:assets
+
+      - name: Set up Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: '8.9'
+
+      - name: Assemble APK
+        working-directory: android
+        run: gradle :app:assembleDebug --no-daemon
+
+      - name: Publish APK artifact
+        uses: actions/upload-artifact@v7
+        with:
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          archive: false
+          if-no-files-found: error
+          retention-days: 30

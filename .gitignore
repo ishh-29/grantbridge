@@ -1,0 +1,15 @@
+.venv/
+**/.venv/
+__pycache__/
+*.py[cod]
+*.db
+private_uploads/
+.env
+.gradle/
+local.properties
+build/
+**/node_modules/
+.originkit/
+android/cosmic-orb/dist/
+android/cosmic-orb/node_modules/
+work/switch-reference/

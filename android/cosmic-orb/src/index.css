@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@source "./components/originkit";
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  margin: 0;
+  background: #05050f;
+}
+
+body {
+  min-height: 100svh;
+  overflow: hidden;
+}
